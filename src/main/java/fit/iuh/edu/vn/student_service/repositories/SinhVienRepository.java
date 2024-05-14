@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface SinhVienRepository extends JpaRepository<SinhVien, Long> {
-    Optional<SinhVien> findByMssv(long mssv);
+    Optional<SinhVien> findByMssvAndMatKhau(long mssv, String matKhau);
 }
