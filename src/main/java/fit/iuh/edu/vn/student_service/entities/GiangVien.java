@@ -14,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 public class GiangVien {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,4 +32,17 @@ public class GiangVien {
     @OneToMany(mappedBy = "giangVien")
     private List<GiangVienLopHocPhan> giangVienLopHocPhans = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "GiangVien{" +
+                "maGiangVien=" + maGiangVien +
+                ", tenGiangVien='" + tenGiangVien + '\'' +
+                ", chucVu='" + chucVu + '\'' +
+                ", soDienThoai='" + soDienThoai + '\'' +
+                ", diaChi='" + diaChi + '\'' +
+                ", gioiTinh='" + gioiTinh + '\'' +
+                ", ngaySinh=" + ngaySinh +
+                ", khoa=" + khoa +
+                '}';
+    }
 }

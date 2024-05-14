@@ -13,10 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 public class SinhVien {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mssv")
     private long mssv;
     @Column(name = "matKhau", length = 32)
@@ -45,4 +43,19 @@ public class SinhVien {
     @OneToMany(mappedBy = "sinhVien")
     private List<BangDiem> bangDiems = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "SinhVien{" +
+                "mssv=" + mssv +
+                ", matKhau='" + matKhau + '\'' +
+                ", hoTen='" + hoTen + '\'' +
+                ", ngaySinh=" + ngaySinh +
+                ", diaChi='" + diaChi + '\'' +
+                ", queQuan='" + queQuan + '\'' +
+                ", soDienThoai='" + soDienThoai + '\'' +
+                ", gioiTinh='" + gioiTinh + '\'' +
+                ", loaiSinhVien=" + loaiSinhVien +
+                ", lopHocDanhNghia=" + lopHocDanhNghia +
+                '}';
+    }
 }

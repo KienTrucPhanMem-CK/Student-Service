@@ -34,4 +34,5 @@ public class BangDiem {
     @ManyToOne
     @JoinColumn(name = "maLopHocPhan")
     private LopHocPhan lopHocPhan;
+
 }

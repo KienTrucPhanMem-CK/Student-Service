@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 public class ChuongTrinhKhung {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,4 +23,12 @@ public class ChuongTrinhKhung {
     private NganhHoc nganhHoc;
     @OneToMany(mappedBy = "chuongTrinhKhung")
     private List<MonHocChuongTrinhKhung> monHocChuongTrinhKhungs = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "ChuongTrinhKhung{" +
+                "maChuongTrinhKhung=" + maChuongTrinhKhung +
+                ", nganhHoc=" + nganhHoc +
+                '}';
+    }
 }
