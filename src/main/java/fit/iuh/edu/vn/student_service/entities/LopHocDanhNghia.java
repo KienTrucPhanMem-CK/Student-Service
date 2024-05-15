@@ -17,7 +17,8 @@ public class LopHocDanhNghia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "maLopHocDanhNghia")
     private long maLopHocDanhNghia;
-    private String tenLop;
+    private String tenLopHocDanhNghia;
+    @Enumerated(EnumType.ORDINAL)
     private BacDaoTao bacDaoTao;
     private String loaiHinhDaoTao;
 
@@ -30,4 +31,13 @@ public class LopHocDanhNghia {
     @ManyToOne
     @JoinColumn(name = "maKhoaHoc")
     private KhoaHoc khoaHoc;
+
+    public LopHocDanhNghia(String tenLopHocDanhNghia, BacDaoTao bacDaoTao, String loaiHinhDaoTao, GiangVien giangVien, NganhHoc nganhHoc, KhoaHoc khoaHoc) {
+        this.tenLopHocDanhNghia = tenLopHocDanhNghia;
+        this.bacDaoTao = bacDaoTao;
+        this.loaiHinhDaoTao = loaiHinhDaoTao;
+        this.giangVien = giangVien;
+        this.nganhHoc = nganhHoc;
+        this.khoaHoc = khoaHoc;
+    }
 }

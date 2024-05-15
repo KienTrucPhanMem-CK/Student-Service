@@ -16,8 +16,10 @@ public class KhoaHoc {
     @Column(name = "maKhoaHoc")
     private long maKhoaHoc;
     private String tenKhoaHoc;
-    private int namHoc;
-    @ManyToOne
-    @JoinColumn(name = "maChuongTrinhKhung")
-    private ChuongTrinhKhung chuongTrinhKhung;
+    private int namBatDauHoc;
+
+    public KhoaHoc(String tenKhoaHoc, int namBatDauHoc) {
+        this.tenKhoaHoc = tenKhoaHoc;
+        this.namBatDauHoc = namBatDauHoc;
+    }
 }

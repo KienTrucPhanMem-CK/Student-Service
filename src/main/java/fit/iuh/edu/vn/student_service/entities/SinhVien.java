@@ -31,6 +31,23 @@ public class SinhVien {
     private String soDienThoai;
     @Column(name = "gioiTinh")
     private String gioiTinh;
+    private String anhDaiDien;
+    private String email;
+
+    public SinhVien(long mssv, String matKhau, String hoTen, LocalDateTime ngaySinh, String diaChi, String queQuan, String soDienThoai, String gioiTinh, String anhDaiDien, String email, LoaiSinhVien loaiSinhVien, LopHocDanhNghia lopHocDanhNghia) {
+        this.mssv = mssv;
+        this.matKhau = matKhau;
+        this.hoTen = hoTen;
+        this.ngaySinh = ngaySinh;
+        this.diaChi = diaChi;
+        this.queQuan = queQuan;
+        this.soDienThoai = soDienThoai;
+        this.gioiTinh = gioiTinh;
+        this.anhDaiDien = anhDaiDien;
+        this.email = email;
+        this.loaiSinhVien = loaiSinhVien;
+        this.lopHocDanhNghia = lopHocDanhNghia;
+    }
 
     @ManyToOne
     @JoinColumn(name = "maLoaiSV")
@@ -38,24 +55,7 @@ public class SinhVien {
     @ManyToOne
     @JoinColumn(name = "maLopHocDanhNghia")
     private LopHocDanhNghia lopHocDanhNghia;
-    @OneToMany(mappedBy = "sinhVien")
-    private List<SinhVienLopHP> sinhVienLopHPS = new ArrayList<>();
-    @OneToMany(mappedBy = "sinhVien")
+    @OneToMany(mappedBy = "sinhVien", fetch = FetchType.LAZY)
     private List<BangDiem> bangDiems = new ArrayList<>();
 
-    @Override
-    public String toString() {
-        return "SinhVien{" +
-                "mssv=" + mssv +
-                ", matKhau='" + matKhau + '\'' +
-                ", hoTen='" + hoTen + '\'' +
-                ", ngaySinh=" + ngaySinh +
-                ", diaChi='" + diaChi + '\'' +
-                ", queQuan='" + queQuan + '\'' +
-                ", soDienThoai='" + soDienThoai + '\'' +
-                ", gioiTinh='" + gioiTinh + '\'' +
-                ", loaiSinhVien=" + loaiSinhVien +
-                ", lopHocDanhNghia=" + lopHocDanhNghia +
-                '}';
-    }
 }

@@ -18,12 +18,7 @@ public class SinhVienController {
     public SinhVienController(SinhVienService sinhVienService) {
         this.sinhVienService = sinhVienService;
     }
-
-    @GetMapping("/homePage")
-    private String homePage() {
-        return "Thông tin từ api";
-    }
-
+    
     @GetMapping("/getStudent")
     private ResponseEntity<SinhVien> getStudentById(@RequestParam Long mssv, @RequestParam String matKhau) {
         Optional<SinhVien> optionalSinhVien = sinhVienService.findSinhVienByMssvAndMatkhau(mssv, matKhau);

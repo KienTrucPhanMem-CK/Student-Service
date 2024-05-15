@@ -19,24 +19,22 @@ public class MonHoc {
     @Column(name = "maMonHoc")
     private long maMonHoc;
     private String tenMonHoc;
-    @Enumerated(EnumType.ORDINAL)
-    private LoaiMonHoc loaiMonHoc;
-    private int soTinChiThucHanh;
-    private int soTinChiLyThuyet;
     @ManyToOne
     @JoinColumn(name = "maKhoa")
     private Khoa khoa;
     @OneToMany(mappedBy = "monHoc")
     private List<MonHocChuongTrinhKhung> monHocChuongTrinhKhungs = new ArrayList<>();
 
+    public MonHoc(String tenMonHoc, Khoa khoa) {
+        this.tenMonHoc = tenMonHoc;
+        this.khoa = khoa;
+    }
+
     @Override
     public String toString() {
         return "MonHoc{" +
                 "maMonHoc=" + maMonHoc +
                 ", tenMonHoc='" + tenMonHoc + '\'' +
-                ", loaiMonHoc=" + loaiMonHoc +
-                ", soTinChiThucHanh=" + soTinChiThucHanh +
-                ", soTinChiLyThuyet=" + soTinChiLyThuyet +
                 ", khoa=" + khoa +
                 '}';
     }

@@ -17,4 +17,7 @@ public class Khoa {
     private long maKhoa;
     private String tenKhoa;
 
+    public Khoa(String tenKhoa) {
+        this.tenKhoa = tenKhoa;
+    }
 }

@@ -18,11 +18,21 @@ public class ChuongTrinhKhung {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "maChuongTrinhKhung")
     private long maChuongTrinhKhung;
+    private String thoiGianHoc;
     @ManyToOne
     @JoinColumn(name = "maNganhHoc")
     private NganhHoc nganhHoc;
+    @ManyToOne
+    @JoinColumn(name = "maKhoaHoc")
+    private KhoaHoc khoaHoc;
     @OneToMany(mappedBy = "chuongTrinhKhung")
     private List<MonHocChuongTrinhKhung> monHocChuongTrinhKhungs = new ArrayList<>();
+
+    public ChuongTrinhKhung(String thoiGianHoc, NganhHoc nganhHoc, KhoaHoc khoaHoc) {
+        this.thoiGianHoc = thoiGianHoc;
+        this.nganhHoc = nganhHoc;
+        this.khoaHoc = khoaHoc;
+    }
 
     @Override
     public String toString() {

@@ -18,4 +18,8 @@ public class LoaiSinhVien {
     private long maLoaiSV;
     @Enumerated(EnumType.ORDINAL)
     private TenLoai tenLoai;
+
+    public LoaiSinhVien(TenLoai tenLoai) {
+        this.tenLoai = tenLoai;
+    }
 }

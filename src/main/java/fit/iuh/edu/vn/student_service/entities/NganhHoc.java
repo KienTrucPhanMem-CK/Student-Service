@@ -19,4 +19,9 @@ public class NganhHoc {
     @ManyToOne
     @JoinColumn(name = "maKhoa")
     private Khoa khoa;
+
+    public NganhHoc(String tenNganhHoc, Khoa khoa) {
+        this.tenNganhHoc = tenNganhHoc;
+        this.khoa = khoa;
+    }
 }

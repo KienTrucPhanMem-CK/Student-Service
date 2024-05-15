@@ -1,5 +1,6 @@
 package fit.iuh.edu.vn.student_service.entities;
 
+import fit.iuh.edu.vn.student_service.enums.LoaiMonHoc;
 import fit.iuh.edu.vn.student_service.pks.MonHocChuongTrinhKhungPKs;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,7 +15,10 @@ import lombok.*;
 @ToString
 public class MonHocChuongTrinhKhung {
     private int hocKy;
-    private int namHoc;
+    @Enumerated(EnumType.ORDINAL)
+    private LoaiMonHoc loaiMonHoc;
+    private int soTinChiThucHanh;
+    private int SoTinChiLyThuyet;
     @Id
     @ManyToOne
     @JoinColumn(name = "maMonHoc")

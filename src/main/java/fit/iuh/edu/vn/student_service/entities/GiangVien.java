@@ -32,6 +32,16 @@ public class GiangVien {
     @OneToMany(mappedBy = "giangVien")
     private List<GiangVienLopHocPhan> giangVienLopHocPhans = new ArrayList<>();
 
+    public GiangVien(String tenGiangVien, String chucVu, String soDienThoai, String diaChi, String gioiTinh, LocalDateTime ngaySinh, Khoa khoa) {
+        this.tenGiangVien = tenGiangVien;
+        this.chucVu = chucVu;
+        this.soDienThoai = soDienThoai;
+        this.diaChi = diaChi;
+        this.gioiTinh = gioiTinh;
+        this.ngaySinh = ngaySinh;
+        this.khoa = khoa;
+    }
+
     @Override
     public String toString() {
         return "GiangVien{" +
