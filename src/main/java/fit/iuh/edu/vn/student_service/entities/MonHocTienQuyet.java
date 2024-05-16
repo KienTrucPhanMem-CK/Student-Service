@@ -13,14 +13,15 @@ import lombok.*;
 @Setter
 @ToString
 public class MonHocTienQuyet {
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "maMonHoc")
-    private MonHoc monHoc;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "maMonHocTienQuyet")
     private MonHoc maMonHocTienQuyet;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "maMonHoc")
+    private MonHoc monHoc;
 
 }
