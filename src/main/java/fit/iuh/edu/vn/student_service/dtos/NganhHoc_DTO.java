@@ -12,4 +12,8 @@ public class NganhHoc_DTO {
     private String tenNganhHoc;
     private long maKhoaHoc;
 
+    public NganhHoc_DTO(long maNganhHoc, String tenNganhHoc) {
+        this.maNganhHoc = maNganhHoc;
+        this.tenNganhHoc = tenNganhHoc;
+    }
 }

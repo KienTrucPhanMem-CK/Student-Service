@@ -62,7 +62,7 @@ public class DataSampleConfig {
 //    @Bean
     CommandLineRunner test() {
         return args -> {
-            List<MonHocChuongTrinhKhung> monHocChuongTrinhKhungs = monHocChuongTrinhKhungRepository.findMonHocChuongTrinhKhungByMssv(20111999);
+            List<MonHocChuongTrinhKhung> monHocChuongTrinhKhungs = monHocChuongTrinhKhungRepository.findMonHocChuongTrinhKhungByMssv(20111601);
             for (MonHocChuongTrinhKhung monHocChuongTrinhKhung : monHocChuongTrinhKhungs) {
                 System.out.println("Môn học chương trình khung:" + monHocChuongTrinhKhung);
             }
