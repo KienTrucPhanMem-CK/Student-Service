@@ -27,4 +27,5 @@ public class MonHocChuongTrinhKhung {
     @ManyToOne
     @JoinColumn(name = "maChuongTrinhKhung")
     private ChuongTrinhKhung chuongTrinhKhung;
+
 }

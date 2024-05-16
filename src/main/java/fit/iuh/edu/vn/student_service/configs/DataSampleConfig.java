@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Configuration
 public class DataSampleConfig {
@@ -59,17 +60,35 @@ public class DataSampleConfig {
     }
 
 //    @Bean
+    CommandLineRunner test() {
+        return args -> {
+            List<MonHocChuongTrinhKhung> monHocChuongTrinhKhungs = monHocChuongTrinhKhungRepository.findMonHocChuongTrinhKhungByMssv(20111999);
+            for (MonHocChuongTrinhKhung monHocChuongTrinhKhung : monHocChuongTrinhKhungs) {
+                System.out.println("Môn học chương trình khung:" + monHocChuongTrinhKhung);
+            }
+        };
+    }
+
+//    @Bean
     CommandLineRunner initDatabase() {
         return args -> {
             // insert Khoa
             Khoa khoaCNTT = new Khoa("Công nghệ thông tin");
             Khoa khoaKT = new Khoa("Tài chính");
+            Khoa khoaLuat = new Khoa("Luật");
             khoaRepository.save(khoaCNTT);
             khoaRepository.save(khoaKT);
+            khoaRepository.save(khoaLuat);
             // insert Nganh hoc
             NganhHoc nganhKTPM = new NganhHoc("Kỹ thuật phần mềm", khoaCNTT);
+            NganhHoc nganhHTTT = new NganhHoc("Hệ thống thông tin", khoaCNTT);
+            NganhHoc nganhATTT = new NganhHoc("An toàn thông tin", khoaCNTT);
+            NganhHoc nganhKHDL = new NganhHoc("Khoa học dữ liệu", khoaCNTT);
             NganhHoc nganhHocKT = new NganhHoc("Tài chính ngân hàng", khoaKT);
             nganhHocRepository.save(nganhKTPM);
+            nganhHocRepository.save(nganhHTTT);
+            nganhHocRepository.save(nganhATTT);
+            nganhHocRepository.save(nganhKHDL);
             nganhHocRepository.save(nganhHocKT);
             // insert Giang vien
             GiangVien gv1 = new GiangVien(
@@ -137,9 +156,18 @@ public class DataSampleConfig {
             lopHocDanhNghiaRepository.save(lopHocDanhNghia2);
             lopHocDanhNghiaRepository.save(lopHocDanhNghia3);
             // insert Mon hoc
-            MonHoc monHoc1 = new MonHoc("Lập trình hướng đối tượng", khoaCNTT);
+            MonHoc monHocLTHDT = new MonHoc("Lập trình hướng đối tượng", khoaCNTT);
+            MonHoc monHocCTDLvaGT = new MonHoc("Cấu trúc dữ liệu và giải thuật", khoaCNTT);
+            MonHoc monhocPTvaTKHT = new MonHoc("Phân tích và thiết kế hệ thống", khoaCNTT);
+            MonHoc monhocCNM = new MonHoc("Công nghệ mới", khoaCNTT);
+            MonHoc monHocWWW = new MonHoc("Lập trình WWW", khoaCNTT);
+
             MonHoc monHoc2 = new MonHoc("Luật kinh tế", khoaKT);
-            monHocRepository.save(monHoc1);
+            monHocRepository.save(monHocLTHDT);
+            monHocRepository.save(monHocCTDLvaGT);
+            monHocRepository.save(monhocPTvaTKHT);
+            monHocRepository.save(monhocCNM);
+            monHocRepository.save(monHocWWW);
             monHocRepository.save(monHoc2);
             // insert Sinh vien
             SinhVien sv1 = new SinhVien(20111311,
@@ -166,12 +194,26 @@ public class DataSampleConfig {
                     "https://th.bing.com/th/id/OIP.mIf9ZAHku6YCPc4qT14avgHaK0?rs=1&pid=ImgDetMain",
                     "phhiep999@gmail.com",
                     loaiSinhVien1,
-                    lopHocDanhNghia3
+                    lopHocDanhNghia1
+            );
+            SinhVien sv3 = new SinhVien(20111999,
+                    "123456",
+                    "Phan Xích Long",
+                    LocalDateTime.of(2002, 1, 1, 0, 0),
+                    "121 Lê Đức Thọ, Gò Vấp",
+                    "Tây Nguyên",
+                    "0974067555",
+                    "Nam",
+                    "https://th.bing.com/th/id/R.06dfda1237b260bd72aa998b6679d0eb?rik=N0Phchug7q3nTg&pid=ImgRaw&r=0",
+                    "phlong999@gmail.com",
+                    loaiSinhVien1,
+                    lopHocDanhNghia1
             );
             sinhVienRepository.save(sv1);
             sinhVienRepository.save(sv2);
+            sinhVienRepository.save(sv3);
             // insert Lop hoc phan
-            LopHocPhan lopHocPhan1 = new LopHocPhan("DHKTPM18B",
+            LopHocPhan lopHocPhan1 = new LopHocPhan("DHKTPM16C",
                     80,
                     TrangThaiLop.CHO_SINH_VIEN_DANG_KY,
                     "ki 1",
@@ -180,7 +222,7 @@ public class DataSampleConfig {
                     1,
                     3,
                     18,
-                    monHoc1
+                    monHocLTHDT
             );
             LopHocPhan lopHocPhan2 = new LopHocPhan("DHKT17A",
                     80,
@@ -193,8 +235,44 @@ public class DataSampleConfig {
                     18,
                     monHoc2
             );
+            LopHocPhan lopHocPhan3 = new LopHocPhan("DHKTPM16D",
+                    60,
+                    TrangThaiLop.CHO_SINH_VIEN_DANG_KY,
+                    "ki 1",
+                    1200000,
+                    300000,
+                    1,
+                    3,
+                    50,
+                    monHocCTDLvaGT
+            );
+            LopHocPhan lopHocPhan4 = new LopHocPhan("DHKTPM16E",
+                    80,
+                    TrangThaiLop.CHO_SINH_VIEN_DANG_KY,
+                    "ki 1",
+                    1500000,
+                    500000,
+                    1,
+                    3,
+                    20,
+                    monHocWWW
+            );
+            LopHocPhan lopHocPhan5 = new LopHocPhan("DHKTPM16F",
+                    80,
+                    TrangThaiLop.CHO_SINH_VIEN_DANG_KY,
+                    "ki 1",
+                    900000,
+                    500000,
+                    1,
+                    3,
+                    50,
+                    monhocCNM
+            );
             lopHocPhanRepository.save(lopHocPhan1);
             lopHocPhanRepository.save(lopHocPhan2);
+            lopHocPhanRepository.save(lopHocPhan3);
+            lopHocPhanRepository.save(lopHocPhan4);
+            lopHocPhanRepository.save(lopHocPhan5);
             // insert Bang diem
             BangDiem bangDiem1 = new BangDiem(7, 5, 4, 6, 7, TrangThai.DAT,
                     LocalDateTime.of(2023, 5, 14, 0, 0),
@@ -206,10 +284,56 @@ public class DataSampleConfig {
                     LocalDateTime.of(2022, 7, 14, 0, 0),
                     TrangThaiHocPhi.DA_DONG,
                     sv2,
-                    lopHocPhan2
+                    lopHocPhan1
             );
             bangDiemRepository.save(bangDiem1);
             bangDiemRepository.save(bangDiem2);
+            // insert Mon hoc-Chuong trinh khung
+            MonHocChuongTrinhKhung monHocChuongTrinhKhung1 = new MonHocChuongTrinhKhung(1,
+                    LoaiMonHoc.BAT_BUOC,
+                    1,
+                    3,
+                    monHocLTHDT,
+                    chuongTrinhKhung1
+            );
+            MonHocChuongTrinhKhung monHocChuongTrinhKhung2 = new MonHocChuongTrinhKhung(1,
+                    LoaiMonHoc.BAT_BUOC,
+                    1,
+                    3,
+                    monHoc2,
+                    chuongTrinhKhung2
+            );
+            MonHocChuongTrinhKhung monHocChuongTrinhKhung3 = new MonHocChuongTrinhKhung(1,
+                    LoaiMonHoc.BAT_BUOC,
+                    1,
+                    3,
+                    monHocCTDLvaGT,
+                    chuongTrinhKhung1
+            );
+            MonHocChuongTrinhKhung monHocChuongTrinhKhung4 = new MonHocChuongTrinhKhung(1,
+                    LoaiMonHoc.BAT_BUOC,
+                    1,
+                    3,
+                    monhocPTvaTKHT,
+                    chuongTrinhKhung1
+            );
+            MonHocChuongTrinhKhung monHocChuongTrinhKhung5 = new MonHocChuongTrinhKhung(1,
+                    LoaiMonHoc.BAT_BUOC,
+                    1,
+                    3,
+                    monHocWWW,
+                    chuongTrinhKhung1
+            );
+            monHocChuongTrinhKhungRepository.save(monHocChuongTrinhKhung1);
+            monHocChuongTrinhKhungRepository.save(monHocChuongTrinhKhung2);
+            monHocChuongTrinhKhungRepository.save(monHocChuongTrinhKhung3);
+            monHocChuongTrinhKhungRepository.save(monHocChuongTrinhKhung4);
+            monHocChuongTrinhKhungRepository.save(monHocChuongTrinhKhung5);
+            // insert Mon hoc tien quyet
+            MonHocTienQuyet monHocTienQuyet1 = new MonHocTienQuyet(monHocLTHDT, monHocWWW);
+            MonHocTienQuyet monHocTienQuyet2 = new MonHocTienQuyet(monHocLTHDT, monHocCTDLvaGT);
+            monHocTienQuyetRepository.save(monHocTienQuyet1);
+            monHocTienQuyetRepository.save(monHocTienQuyet2);
         };
     }
 }

@@ -1,0 +1,15 @@
+package fit.iuh.edu.vn.student_service.dtos;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class NganhHoc_DTO {
+    private long maNganhHoc;
+    private String tenNganhHoc;
+    private long maKhoaHoc;
+
+}

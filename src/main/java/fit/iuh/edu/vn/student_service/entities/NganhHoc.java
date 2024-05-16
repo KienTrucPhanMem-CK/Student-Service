@@ -17,7 +17,7 @@ public class NganhHoc {
     private long maNganhHoc;
     private String tenNganhHoc;
     @ManyToOne
-    @JoinColumn(name = "maKhoa")
+    @JoinColumn(name = "maKhoaHoc")
     private Khoa khoa;
 
     public NganhHoc(String tenNganhHoc, Khoa khoa) {

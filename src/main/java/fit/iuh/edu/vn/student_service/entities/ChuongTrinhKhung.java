@@ -38,7 +38,9 @@ public class ChuongTrinhKhung {
     public String toString() {
         return "ChuongTrinhKhung{" +
                 "maChuongTrinhKhung=" + maChuongTrinhKhung +
+                ", thoiGianHoc='" + thoiGianHoc + '\'' +
                 ", nganhHoc=" + nganhHoc +
+                ", khoaHoc=" + khoaHoc +
                 '}';
     }
 }

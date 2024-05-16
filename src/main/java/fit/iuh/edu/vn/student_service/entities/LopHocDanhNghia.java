@@ -26,7 +26,7 @@ public class LopHocDanhNghia {
     @JoinColumn(name = "maGV")
     private GiangVien giangVien;
     @ManyToOne
-    @JoinColumn(name = "maNganh")
+    @JoinColumn(name = "maNganhHoc")
     private NganhHoc nganhHoc;
     @ManyToOne
     @JoinColumn(name = "maKhoaHoc")

@@ -24,11 +24,14 @@ public class MonHoc {
     private Khoa khoa;
     @OneToMany(mappedBy = "monHoc")
     private List<MonHocChuongTrinhKhung> monHocChuongTrinhKhungs = new ArrayList<>();
+    @OneToMany(mappedBy = "monHoc")
+    private List<MonHocTienQuyet> monHocTienQuyets;
 
     public MonHoc(String tenMonHoc, Khoa khoa) {
         this.tenMonHoc = tenMonHoc;
         this.khoa = khoa;
     }
+
 
     @Override
     public String toString() {
