@@ -2,6 +2,7 @@ package fit.iuh.edu.vn.student_service.controllers;
 
 import fit.iuh.edu.vn.student_service.dtos.*;
 import fit.iuh.edu.vn.student_service.entities.*;
+import fit.iuh.edu.vn.student_service.services.GiangVienLopHocPhanService;
 import fit.iuh.edu.vn.student_service.services.LopHocPhanService;
 import fit.iuh.edu.vn.student_service.services.MonHocCTKService;
 import fit.iuh.edu.vn.student_service.services.SinhVienService;
@@ -20,12 +21,14 @@ public class SinhVienController {
     private final SinhVienService sinhVienService;
     private final MonHocCTKService monHocCTKService;
     private final LopHocPhanService lopHocPhanService;
+    private final GiangVienLopHocPhanService giangVienLopHocPhanService;
 
     @Autowired
-    public SinhVienController(SinhVienService sinhVienService, MonHocCTKService monHocCTKService, LopHocPhanService lopHocPhanService) {
+    public SinhVienController(SinhVienService sinhVienService, MonHocCTKService monHocCTKService, LopHocPhanService lopHocPhanService, GiangVienLopHocPhanService giangVienLopHocPhanService) {
         this.sinhVienService = sinhVienService;
         this.monHocCTKService = monHocCTKService;
         this.lopHocPhanService = lopHocPhanService;
+        this.giangVienLopHocPhanService = giangVienLopHocPhanService;
     }
 
     @GetMapping("/getStudent")
@@ -35,7 +38,7 @@ public class SinhVienController {
             LopHocDanhNghia lopHocDanhNghia = lopHocDanhNghiaOptional.get();
             SinhVien_DTO sinhVien_dto = new SinhVien_DTO();
             int thuTuSinhVien = 0;
-            if (lopHocDanhNghia.getSinhViens().size() > 0) {
+            if (!lopHocDanhNghia.getSinhViens().isEmpty()) {
                 for (int i = 0; i < lopHocDanhNghia.getSinhViens().size(); i++) {
                     if (lopHocDanhNghia.getSinhViens().get(i).getMssv() == mssv) {
                         thuTuSinhVien = i;
@@ -43,18 +46,10 @@ public class SinhVienController {
                 }
                 String bacDaoTao = "";
                 switch (lopHocDanhNghia.getBacDaoTao().getValue()) {
-                    case 0:
-                        bacDaoTao += "Cao Đẳng";
-                        break;
-                    case 1:
-                        bacDaoTao += "Đại Học";
-                        break;
-                    case 2:
-                        bacDaoTao += "Thạc Sỹ";
-                        break;
-                    case 3:
-                        bacDaoTao += "Liên Thông";
-                        break;
+                    case 0 -> bacDaoTao += "Cao Đẳng";
+                    case 1 -> bacDaoTao += "Đại Học";
+                    case 2 -> bacDaoTao += "Thạc Sỹ";
+                    case 3 -> bacDaoTao += "Liên Thông";
                 }
                 sinhVien_dto = new SinhVien_DTO(
                         lopHocDanhNghia.getSinhViens().get(thuTuSinhVien).getMssv(),
@@ -95,16 +90,11 @@ public class SinhVienController {
             for (MonHocChuongTrinhKhung monHocChuongTrinhKhung : monHocChuongTrinhKhungList) {
                 String loaiMonHoc = "";
                 switch (monHocChuongTrinhKhung.getLoaiMonHoc().getValue()) {
-                    case 0:
-                        loaiMonHoc += "Bắt buộc";
-                        break;
-                    case 1:
-                        loaiMonHoc += "Tùy chọn";
-                        break;
-
+                    case 0 -> loaiMonHoc += "Bắt buộc";
+                    case 1 -> loaiMonHoc += "Tùy chọn";
                 }
-                MonHoc_DTO monHocDto = new MonHoc_DTO();
-                if (monHocChuongTrinhKhung.getMonHoc().getMonHocTienQuyets().size() > 0) {
+                MonHoc_DTO monHocDto;
+                if (!monHocChuongTrinhKhung.getMonHoc().getMonHocTienQuyets().isEmpty()) {
                     monHocDto = new MonHoc_DTO(monHocChuongTrinhKhung.getMonHoc().getMaMonHoc(),
                             monHocChuongTrinhKhung.getMonHoc().getTenMonHoc(),
                             monHocChuongTrinhKhung.getChuongTrinhKhung().getKhoaHoc().getMaKhoaHoc(),
@@ -149,13 +139,8 @@ public class SinhVienController {
             LopHocPhan lopHocPhan = optionalLopHocPhan.get();
             String trangThaiLop = "";
             switch (lopHocPhan.getTrangThaiLop().getValue()) {
-                case 0:
-                    trangThaiLop += "Đã khóa";
-                    break;
-                case 1:
-                    trangThaiLop += "Chờ sinh viên đăng ký";
-                    break;
-
+                case 0 -> trangThaiLop += "Đã khóa";
+                case 1 -> trangThaiLop += "Chờ sinh viên đăng ký";
             }
             MonHoc_DTO monHoc_dto = new MonHoc_DTO(lopHocPhan.getMonHoc().getMaMonHoc(),
                     lopHocPhan.getMonHoc().getTenMonHoc(),
@@ -175,6 +160,39 @@ public class SinhVienController {
                     lopHocPhan.getSoLuongDaDangKy()
             );
             return ResponseEntity.ok(lopHocPhan_dto);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/getGiangVienLopHP")
+    private ResponseEntity<GiangVienLopHocPhan_DTO> getGiangVienLopHocPhan(long maLopHocPhan) {
+        Optional<GiangVienLopHocPhan> optionalGiangVienLopHocPhan = giangVienLopHocPhanService.findGiangVienLopHocPhanByMaLopHP(maLopHocPhan);
+        if (optionalGiangVienLopHocPhan.isPresent()) {
+            GiangVienLopHocPhan giangVienLopHocPhan = optionalGiangVienLopHocPhan.get();
+            GiangVien_DTO giangVien_dto = new GiangVien_DTO(giangVienLopHocPhan.getGiangVien().getMaGiangVien(),
+                    giangVienLopHocPhan.getGiangVien().getTenGiangVien(),
+                    giangVienLopHocPhan.getGiangVien().getChucVu(),
+                    giangVienLopHocPhan.getGiangVien().getSoDienThoai(),
+                    giangVienLopHocPhan.getGiangVien().getDiaChi(),
+                    giangVienLopHocPhan.getGiangVien().getGioiTinh(),
+                    giangVienLopHocPhan.getGiangVien().getNgaySinh()
+            );
+            String loaiLichHoc = "";
+            switch (giangVienLopHocPhan.getLoaiLichHoc().getValue()) {
+                case 0 -> loaiLichHoc += "LT";
+                case 1 -> loaiLichHoc += "TH";
+            }
+
+            GiangVienLopHocPhan_DTO giangVienLopHocPhan_dto = new GiangVienLopHocPhan_DTO(
+                    giangVien_dto,
+                    giangVienLopHocPhan.getLopHocPhan().getMaLopHocPhan(),
+                    loaiLichHoc,
+                    giangVienLopHocPhan.getViTri(),
+                    giangVienLopHocPhan.getLichHoc(),
+                    giangVienLopHocPhan.getThoiGian(),
+                    giangVienLopHocPhan.getNhomTH()
+            );
+            return ResponseEntity.ok(giangVienLopHocPhan_dto);
         }
         return ResponseEntity.notFound().build();
     }

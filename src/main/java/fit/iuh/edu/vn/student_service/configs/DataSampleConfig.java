@@ -13,20 +13,20 @@ import java.util.List;
 
 @Configuration
 public class DataSampleConfig {
-    private BangDiemRepository bangDiemRepository;
-    private ChuongTrinhKhungRepository chuongTrinhKhungRepository;
-    private GiangVienLopHocPhanRepository giangVienLopHocPhanRepository;
-    private GiangVienRepository giangVienRepository;
-    private KhoaHocRepository khoaHocRepository;
-    private KhoaRepository khoaRepository;
-    private LoaiSinhVienRepository loaiSinhVienRepository;
-    private LopHocDanhNghiaRepository lopHocDanhNghiaRepository;
-    private LopHocPhanRepository lopHocPhanRepository;
-    private MonHocChuongTrinhKhungRepository monHocChuongTrinhKhungRepository;
-    private MonHocRepository monHocRepository;
-    private MonHocTienQuyetRepository monHocTienQuyetRepository;
-    private NganhHocRepository nganhHocRepository;
-    private SinhVienRepository sinhVienRepository;
+    private final BangDiemRepository bangDiemRepository;
+    private final ChuongTrinhKhungRepository chuongTrinhKhungRepository;
+    private final GiangVienLopHocPhanRepository giangVienLopHocPhanRepository;
+    private final GiangVienRepository giangVienRepository;
+    private final KhoaHocRepository khoaHocRepository;
+    private final KhoaRepository khoaRepository;
+    private final LoaiSinhVienRepository loaiSinhVienRepository;
+    private final LopHocDanhNghiaRepository lopHocDanhNghiaRepository;
+    private final LopHocPhanRepository lopHocPhanRepository;
+    private final MonHocChuongTrinhKhungRepository monHocChuongTrinhKhungRepository;
+    private final MonHocRepository monHocRepository;
+    private final MonHocTienQuyetRepository monHocTienQuyetRepository;
+    private final NganhHocRepository nganhHocRepository;
+    private final SinhVienRepository sinhVienRepository;
 
     @Autowired
     public DataSampleConfig(BangDiemRepository bangDiemRepository,
@@ -59,7 +59,7 @@ public class DataSampleConfig {
         this.sinhVienRepository = sinhVienRepository;
     }
 
-//    @Bean
+    //    @Bean
     CommandLineRunner test() {
         return args -> {
             List<MonHocChuongTrinhKhung> monHocChuongTrinhKhungs = monHocChuongTrinhKhungRepository.findMonHocChuongTrinhKhungByMssv(20111601);
@@ -69,7 +69,7 @@ public class DataSampleConfig {
         };
     }
 
-//    @Bean
+//        @Bean
     CommandLineRunner initDatabase() {
         return args -> {
             // insert Khoa
@@ -107,8 +107,26 @@ public class DataSampleConfig {
                     LocalDateTime.of(2002, 9, 18, 0, 0),
                     khoaKT
             );
+            GiangVien gv3 = new GiangVien(
+                    "Tôn Long Phước",
+                    "TS",
+                    "0339717899",
+                    "111 Quang Trung, Gò vấp", "Nam",
+                    LocalDateTime.of(1983, 2, 2, 0, 0),
+                    khoaCNTT
+            );
+            GiangVien gv4 = new GiangVien(
+                    "Nguyễn Thị Hoàng Khánh",
+                    "TS",
+                    "0339717891",
+                    "222 Quang Trung, Gò vấp", "Nam",
+                    LocalDateTime.of(1988, 6, 13, 0, 0),
+                    khoaCNTT
+            );
             giangVienRepository.save(gv1);
             giangVienRepository.save(gv2);
+            giangVienRepository.save(gv3);
+            giangVienRepository.save(gv4);
             // insert Khoa hoc
             KhoaHoc khoa16 = new KhoaHoc("K16", 2020);
             KhoaHoc khoa17 = new KhoaHoc("K17", 2021);
@@ -334,6 +352,28 @@ public class DataSampleConfig {
             MonHocTienQuyet monHocTienQuyet2 = new MonHocTienQuyet(monHocLTHDT, monHocCTDLvaGT);
             monHocTienQuyetRepository.save(monHocTienQuyet1);
             monHocTienQuyetRepository.save(monHocTienQuyet2);
+            // insert Giang Vien-Lop Hoc Phan
+            GiangVienLopHocPhan giangVienLopHocPhan1 = new GiangVienLopHocPhan(
+                    LoaiLichHoc.TH,
+                    "Tructiep_X_2.02",
+                    "Thứ 3(T7-9)",
+                    LocalDateTime.of(2024, 6, 13, 2, 1),
+                    1,
+                    gv1,
+                    lopHocPhan1
+            );
+            GiangVienLopHocPhan giangVienLopHocPhan2 = new GiangVienLopHocPhan(
+                    LoaiLichHoc.LT,
+                    "Tructuyen_Zoom_2888888_8888",
+                    "Thứ 2(T1-3)",
+                    LocalDateTime.of(2024, 6, 14, 2, 1),
+                    2,
+                    gv3,
+                    lopHocPhan2
+            );
+            giangVienLopHocPhanRepository.save(giangVienLopHocPhan1);
+            giangVienLopHocPhanRepository.save(giangVienLopHocPhan2);
+//            "Tructuyen_Zoom_2888888_8888"
         };
     }
 }
