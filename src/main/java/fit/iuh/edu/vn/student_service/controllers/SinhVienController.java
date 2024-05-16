@@ -51,48 +51,81 @@ public class SinhVienController {
     }
 
     @GetMapping("/getMonHocCTK")
-    private ResponseEntity<MonHocCTK_DTO> getMonHocCTK(@RequestParam long mssv) {
+    private ResponseEntity<List<MonHocCTK_DTO>> getMonHocCTK(@RequestParam long mssv) {
         List<MonHocChuongTrinhKhung> monHocChuongTrinhKhungList = monHocCTKService.getMonHocCTKByMssv(mssv);
         if (!monHocChuongTrinhKhungList.isEmpty()) {
             List<MonHoc_DTO> monHocDtos = new ArrayList<>();
             List<ChuongTrinhKhung_DTO> chuongTrinhKhungDtos = new ArrayList<>();
             List<KhoaHoc_DTO> khoaHocDtos = new ArrayList<>();
             List<NganhHoc_DTO> nganhHocDtos = new ArrayList<>();
+            List<MonHocCTK_DTO> monHocCTK_dtos = new ArrayList<>();
             for (MonHocChuongTrinhKhung monHocChuongTrinhKhung : monHocChuongTrinhKhungList) {
+                String loaiMonHoc = "";
+                switch (monHocChuongTrinhKhung.getLoaiMonHoc().getValue()) {
+                    case 0:
+                        loaiMonHoc += "Bắt buộc";
+                        break;
+                    case 1:
+                        loaiMonHoc += "Tùy chọn";
+                        break;
+
+                }
                 MonHoc_DTO monHocDto = new MonHoc_DTO();
-                if (monHocChuongTrinhKhung.getMonHoc().getMonHocTienQuyets().size() > 0)
-                    monHocDto = new MonHoc_DTO(
-                            monHocChuongTrinhKhung.getMonHoc().getMaMonHoc(),
+                if (monHocChuongTrinhKhung.getMonHoc().getMonHocTienQuyets().size() > 0) {
+                    monHocDto = new MonHoc_DTO(monHocChuongTrinhKhung.getMonHoc().getMaMonHoc(),
                             monHocChuongTrinhKhung.getMonHoc().getTenMonHoc(),
                             monHocChuongTrinhKhung.getChuongTrinhKhung().getKhoaHoc().getMaKhoaHoc(),
                             monHocChuongTrinhKhung.getMonHoc().getMonHocTienQuyets().get(0).getMaMonHocTienQuyet().getMaMonHoc()
                     );
-                else
-                    monHocDto = new MonHoc_DTO(
-                            monHocChuongTrinhKhung.getMonHoc().getMaMonHoc(),
+                } else {
+                    monHocDto = new MonHoc_DTO(monHocChuongTrinhKhung.getMonHoc().getMaMonHoc(),
                             monHocChuongTrinhKhung.getMonHoc().getTenMonHoc(),
-                            monHocChuongTrinhKhung.getChuongTrinhKhung().getKhoaHoc().getMaKhoaHoc()
-                    );
-                System.out.println("==============================");
-                System.out.println(monHocDto);
-                KhoaHoc_DTO khoaHocDto = new KhoaHoc_DTO(
-                        monHocChuongTrinhKhung.getChuongTrinhKhung().getKhoaHoc().getMaKhoaHoc(),
-                        monHocChuongTrinhKhung.getChuongTrinhKhung().getKhoaHoc().getTenKhoaHoc(),
-                        monHocChuongTrinhKhung.getChuongTrinhKhung().getKhoaHoc().getNamBatDauHoc()
-                );
-                NganhHoc_DTO nganhHocDto = new NganhHoc_DTO(
-                        monHocChuongTrinhKhung.getChuongTrinhKhung().getNganhHoc().getMaNganhHoc(),
-                        monHocChuongTrinhKhung.getChuongTrinhKhung().getNganhHoc().getTenNganhHoc(),
-                        monHocChuongTrinhKhung.getChuongTrinhKhung().getKhoaHoc().getMaKhoaHoc()
-                );
-                ChuongTrinhKhung_DTO chuongTrinhKhungDto = new ChuongTrinhKhung_DTO(
+                            monHocChuongTrinhKhung.getChuongTrinhKhung().getKhoaHoc().getMaKhoaHoc());
+                }
+
+                MonHocCTK_DTO monHocCTK_dto = new MonHocCTK_DTO(monHocDto,
                         monHocChuongTrinhKhung.getChuongTrinhKhung().getMaChuongTrinhKhung(),
-                        nganhHocDto,
-                        khoaHocDto,
-                        monHocChuongTrinhKhung.getChuongTrinhKhung().getThoiGianHoc()
+                        monHocChuongTrinhKhung.getHocKy(),
+                        loaiMonHoc,
+                        monHocChuongTrinhKhung.getSoTinChiLyThuyet(),
+                        monHocChuongTrinhKhung.getSoTinChiThucHanh()
                 );
-                monHocDtos.add(monHocDto);
-                chuongTrinhKhungDtos.add(chuongTrinhKhungDto);
+                monHocCTK_dtos.add(monHocCTK_dto);
+//                System.out.println("Môn học chương trình khung: "+ monHocChuongTrinhKhung);
+//                MonHoc_DTO monHocDto = new MonHoc_DTO();
+//                if (monHocChuongTrinhKhung.getMonHoc().getMonHocTienQuyets().size() > 0)
+//                    monHocDto = new MonHoc_DTO(
+//                            monHocChuongTrinhKhung.getMonHoc().getMaMonHoc(),
+//                            monHocChuongTrinhKhung.getMonHoc().getTenMonHoc(),
+//                            monHocChuongTrinhKhung.getChuongTrinhKhung().getKhoaHoc().getMaKhoaHoc(),
+//                            monHocChuongTrinhKhung.getMonHoc().getMonHocTienQuyets().get(0).getMaMonHocTienQuyet().getMaMonHoc()
+//                    );
+//                else
+//                    monHocDto = new MonHoc_DTO(
+//                            monHocChuongTrinhKhung.getMonHoc().getMaMonHoc(),
+//                            monHocChuongTrinhKhung.getMonHoc().getTenMonHoc(),
+//                            monHocChuongTrinhKhung.getChuongTrinhKhung().getKhoaHoc().getMaKhoaHoc()
+//                    );
+//                System.out.println("==============================");
+//                System.out.println(monHocDto);
+//                KhoaHoc_DTO khoaHocDto = new KhoaHoc_DTO(
+//                        monHocChuongTrinhKhung.getChuongTrinhKhung().getKhoaHoc().getMaKhoaHoc(),
+//                        monHocChuongTrinhKhung.getChuongTrinhKhung().getKhoaHoc().getTenKhoaHoc(),
+//                        monHocChuongTrinhKhung.getChuongTrinhKhung().getKhoaHoc().getNamBatDauHoc()
+//                );
+//                NganhHoc_DTO nganhHocDto = new NganhHoc_DTO(
+//                        monHocChuongTrinhKhung.getChuongTrinhKhung().getNganhHoc().getMaNganhHoc(),
+//                        monHocChuongTrinhKhung.getChuongTrinhKhung().getNganhHoc().getTenNganhHoc(),
+//                        monHocChuongTrinhKhung.getChuongTrinhKhung().getKhoaHoc().getMaKhoaHoc()
+//                );
+//                ChuongTrinhKhung_DTO chuongTrinhKhungDto = new ChuongTrinhKhung_DTO(
+//                        monHocChuongTrinhKhung.getChuongTrinhKhung().getMaChuongTrinhKhung(),
+//                        nganhHocDto,
+//                        khoaHocDto,
+//                        monHocChuongTrinhKhung.getChuongTrinhKhung().getThoiGianHoc()
+//                );
+//                monHocDtos.add(monHocDto);
+//                chuongTrinhKhungDtos.add(chuongTrinhKhungDto);
 //                khoaHocDtos.add(khoaHocDto);
 //                nganhHocDtos.add(nganhHocDto);
 //                System.out.println("==============================");
@@ -113,15 +146,15 @@ public class SinhVienController {
                     break;
 
             }
-            MonHocCTK_DTO monHocCTKDto = new MonHocCTK_DTO(
-                    monHocDtos,
-                    chuongTrinhKhungDtos,
-                    monHocChuongTrinhKhungList.get(0).getHocKy(),
-                    loaiMonHoc,
-                    monHocChuongTrinhKhungList.get(0).getSoTinChiLyThuyet(),
-                    monHocChuongTrinhKhungList.get(0).getSoTinChiThucHanh()
-            );
-            return ResponseEntity.ok(monHocCTKDto);
+//            MonHocCTK_DTO monHocCTKDto = new MonHocCTK_DTO(
+//                    monHocDtos,
+//                    chuongTrinhKhungDtos,
+//                    monHocChuongTrinhKhungList.get(0).getHocKy(),
+//                    loaiMonHoc,
+//                    monHocChuongTrinhKhungList.get(0).getSoTinChiLyThuyet(),
+//                    monHocChuongTrinhKhungList.get(0).getSoTinChiThucHanh()
+//            );
+            return ResponseEntity.ok(monHocCTK_dtos);
         }
         return ResponseEntity.notFound().build();
     }

@@ -10,8 +10,10 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class MonHocCTK_DTO {
-    private List<MonHoc_DTO> monHocs;
-    private List<ChuongTrinhKhung_DTO> chuongTrinhKhungs;
+    private MonHoc_DTO maMonHoc;
+    private long maChuongTrinhKhung;
+//    private List<MonHoc_DTO> monHocs;
+//    private List<ChuongTrinhKhung_DTO> chuongTrinhKhungs;
     private int hocKy;
     private String loaiMonHoc;
     private int soTinChiLyThuyet;
