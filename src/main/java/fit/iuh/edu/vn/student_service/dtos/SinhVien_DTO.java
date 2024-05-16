@@ -20,6 +20,16 @@ public class SinhVien_DTO {
     private String gioiTinh;
     private String anhDaiDien;
     private String email;
-    private long maLopHocDanhNghia;
     private long maLoaiSinhVien;
+    private long maLopHocDanhNghia;
+    private String tenLopHocDanhNghia;
+    private String bacDaoTao;
+    private String loaiHinhDaoTao;
+    private long maKhoaHoc;
+    private String tenKhoaHoc;
+    private int namBatDauHoc;
+    private long maNganhHoc;
+    private String tenNganhHoc;
+    private long maKhoa;
+    private String tenKhoa;
 }

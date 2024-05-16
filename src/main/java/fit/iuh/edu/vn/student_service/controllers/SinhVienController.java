@@ -1,7 +1,9 @@
 package fit.iuh.edu.vn.student_service.controllers;
 
 import fit.iuh.edu.vn.student_service.dtos.*;
+import fit.iuh.edu.vn.student_service.entities.LopHocDanhNghia;
 import fit.iuh.edu.vn.student_service.entities.MonHocChuongTrinhKhung;
+import fit.iuh.edu.vn.student_service.entities.NganhHoc;
 import fit.iuh.edu.vn.student_service.entities.SinhVien;
 import fit.iuh.edu.vn.student_service.services.MonHocCTKService;
 import fit.iuh.edu.vn.student_service.services.SinhVienService;
@@ -28,23 +30,53 @@ public class SinhVienController {
 
     @GetMapping("/getStudent")
     private ResponseEntity<SinhVien_DTO> getStudentById(@RequestParam Long mssv, @RequestParam String matKhau) {
-        Optional<SinhVien> optionalSinhVien = sinhVienService.findSinhVienByMssvAndMatkhau(mssv, matKhau);
-        if (optionalSinhVien.isPresent()) {
-            SinhVien sinhVien = optionalSinhVien.get();
-            SinhVien_DTO sinhVienDto = new SinhVien_DTO(sinhVien.getMssv(),
-                    sinhVien.getMatKhau(),
-                    sinhVien.getHoTen(),
-                    sinhVien.getNgaySinh(),
-                    sinhVien.getDiaChi(),
-                    sinhVien.getQueQuan(),
-                    sinhVien.getSoDienThoai(),
-                    sinhVien.getGioiTinh(),
-                    sinhVien.getAnhDaiDien(),
-                    sinhVien.getEmail(),
-                    sinhVien.getLopHocDanhNghia().getMaLopHocDanhNghia(),
-                    sinhVien.getLoaiSinhVien().getMaLoaiSV()
-            );
-            return ResponseEntity.ok(sinhVienDto);
+        Optional<LopHocDanhNghia> lopHocDanhNghiaOptional = sinhVienService.findSinhVienByMssvAndMatkhau(mssv, matKhau);
+        if (lopHocDanhNghiaOptional.isPresent()) {
+            LopHocDanhNghia lopHocDanhNghia = lopHocDanhNghiaOptional.get();
+            SinhVien_DTO sinhVien_dto = new SinhVien_DTO();
+            if (lopHocDanhNghia.getSinhViens().size() > 0) {
+                System.out.println("sinh viennn: " + lopHocDanhNghia.getSinhViens().get(0).getHoTen());
+                String bacDaoTao = "";
+                switch (lopHocDanhNghia.getBacDaoTao().getValue()) {
+                    case 0:
+                        bacDaoTao += "Cao Đẳng";
+                        break;
+                    case 1:
+                        bacDaoTao += "Đại Học";
+                        break;
+                    case 2:
+                        bacDaoTao += "Thạc Sỹ";
+                        break;
+                    case 3:
+                        bacDaoTao += "Liên Thông";
+                        break;
+                }
+                 sinhVien_dto = new SinhVien_DTO(
+                        lopHocDanhNghia.getSinhViens().get(0).getMssv(),
+                        lopHocDanhNghia.getSinhViens().get(0).getMatKhau(),
+                        lopHocDanhNghia.getSinhViens().get(0).getHoTen(),
+                        lopHocDanhNghia.getSinhViens().get(0).getNgaySinh(),
+                        lopHocDanhNghia.getSinhViens().get(0).getDiaChi(),
+                        lopHocDanhNghia.getSinhViens().get(0).getQueQuan(),
+                        lopHocDanhNghia.getSinhViens().get(0).getSoDienThoai(),
+                        lopHocDanhNghia.getSinhViens().get(0).getGioiTinh(),
+                        lopHocDanhNghia.getSinhViens().get(0).getAnhDaiDien(),
+                        lopHocDanhNghia.getSinhViens().get(0).getEmail(),
+                        lopHocDanhNghia.getSinhViens().get(0).getLoaiSinhVien().getMaLoaiSV(),
+                        lopHocDanhNghia.getMaLopHocDanhNghia(),
+                        lopHocDanhNghia.getTenLopHocDanhNghia(),
+                        bacDaoTao,
+                        lopHocDanhNghia.getLoaiHinhDaoTao(),
+                        lopHocDanhNghia.getKhoaHoc().getMaKhoaHoc(),
+                        lopHocDanhNghia.getKhoaHoc().getTenKhoaHoc(),
+                        lopHocDanhNghia.getKhoaHoc().getNamBatDauHoc(),
+                        lopHocDanhNghia.getNganhHoc().getMaNganhHoc(),
+                        lopHocDanhNghia.getNganhHoc().getTenNganhHoc(),
+                        lopHocDanhNghia.getNganhHoc().getKhoa().getMaKhoa(),
+                        lopHocDanhNghia.getNganhHoc().getKhoa().getTenKhoa()
+                );
+            }
+            return ResponseEntity.ok(sinhVien_dto);
         } else {
             return ResponseEntity.notFound().build();
         }
