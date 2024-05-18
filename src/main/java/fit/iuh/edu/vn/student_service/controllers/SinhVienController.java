@@ -166,46 +166,98 @@ public class SinhVienController {
 
     @GetMapping("/getGiangVienLopHP")
     private ResponseEntity<GiangVienLopHocPhan_DTO> getGiangVienLopHocPhan(@RequestParam long maLopHocPhan) {
-        Optional<GiangVienLopHocPhan> optionalGiangVienLopHocPhan = giangVienLopHocPhanService.findGiangVienLopHocPhanByMaLopHP(maLopHocPhan);
-        if (optionalGiangVienLopHocPhan.isPresent()) {
-            GiangVienLopHocPhan giangVienLopHocPhan = optionalGiangVienLopHocPhan.get();
-            GiangVien_DTO giangVien_dto = new GiangVien_DTO(giangVienLopHocPhan.getGiangVien().getMaGiangVien(),
-                    giangVienLopHocPhan.getGiangVien().getTenGiangVien(),
-                    giangVienLopHocPhan.getGiangVien().getChucVu(),
-                    giangVienLopHocPhan.getGiangVien().getSoDienThoai(),
-                    giangVienLopHocPhan.getGiangVien().getDiaChi(),
-                    giangVienLopHocPhan.getGiangVien().getGioiTinh(),
-                    giangVienLopHocPhan.getGiangVien().getNgaySinh()
-            );
+        List<LichHocTH> lichHocTHList = giangVienLopHocPhanService.findGiangVienLopHocPhanByMaLopHP(maLopHocPhan);
+        if (lichHocTHList != null) {
+            List<GiangVienLopHocPhan_DTO> giangVienLopHocPhan_dtoList = new ArrayList<>();
+            GiangVien_DTO giangVien_dto = new GiangVien_DTO();
+            GiangVienLopHocPhan_DTO giangVienLopHocPhan_dto = new GiangVienLopHocPhan_DTO();
+            LichHocTH_DTO lichHocTH_dto = new LichHocTH_DTO();
             String loaiLichHoc = "";
-            switch (giangVienLopHocPhan.getLoaiLichHoc().getValue()) {
-                case 0 -> loaiLichHoc += "LT";
-                case 1 -> loaiLichHoc += "TH";
+            for (LichHocTH lichHocTH : lichHocTHList) {
+                switch (lichHocTH.getGiangVienLopHocPhan().getLoaiLichHoc().getValue()) {
+                    case 0 -> loaiLichHoc += "LT";
+                    case 1 -> loaiLichHoc += "TH";
+                }
+                giangVien_dto = new GiangVien_DTO(
+                        lichHocTH.getGiangVienLopHocPhan().getGiangVien().getMaGiangVien(),
+                        lichHocTH.getGiangVienLopHocPhan().getGiangVien().getTenGiangVien(),
+                        lichHocTH.getGiangVienLopHocPhan().getGiangVien().getChucVu(),
+                        lichHocTH.getGiangVienLopHocPhan().getGiangVien().getSoDienThoai(),
+                        lichHocTH.getGiangVienLopHocPhan().getGiangVien().getDiaChi(),
+                        lichHocTH.getGiangVienLopHocPhan().getGiangVien().getGioiTinh(),
+                        lichHocTH.getGiangVienLopHocPhan().getGiangVien().getNgaySinh()
+                );
+                lichHocTH_dto = new LichHocTH_DTO(
+                        lichHocTH.getMaLichHocTH(),
+                        lichHocTH.getTenNhomLichHocTH(),
+                        lichHocTH.getViTri(),
+                        lichHocTH.getLichHoc(),
+                        lichHocTH.getGiangVienLopHocPhan().getLopHocPhan().getMaLopHocPhan()
+                );
+                giangVienLopHocPhan_dto = new GiangVienLopHocPhan_DTO(
+                        giangVien_dto,
+                        lichHocTH.getGiangVienLopHocPhan().getLopHocPhan().getMaLopHocPhan(),
+                        loaiLichHoc,
+                        lichHocTH.getViTri(),
+                        lichHocTH.getLichHoc(),
+                        List.of(lichHocTH_dto),
+                        lichHocTH.getGiangVienLopHocPhan().getThoiGian()
+                );
             }
-            List<String> lichHocLT = new ArrayList<>();
-            for (int i = 0; i < giangVienLopHocPhan.getLichHocLT().size(); i++) {
-                lichHocLT.add(giangVienLopHocPhan.getLichHocLT().get(i));
-            }
-            List<String> lichHocs = new ArrayList<>();
-            for (int i = 0; i < giangVienLopHocPhan.getLichHocTH().getLichHoc().size(); i++) {
-                lichHocs.add(giangVienLopHocPhan.getLichHocTH().getLichHoc().get(i));
-            }
-            LichHocTH_DTO lichHocTH_dto = new LichHocTH_DTO(
-                    giangVienLopHocPhan.getLichHocTH().getMaLichHocTH(),
-                    giangVienLopHocPhan.getLichHocTH().getTenNhomLichHocTH(),
-                    giangVienLopHocPhan.getLichHocTH().getViTri(),
-                    lichHocs
-            );
+//            GiangVien_DTO giangVien_dto;
+//            for (LichHocTH lichHocTH : lichHocTHList) {
+//                giangVien_dto = new GiangVien_DTO(
+//                        lichHocTH.getGiangVienLopHocPhan().getGiangVien().getMaGiangVien(),
+//                        lichHocTH.getGiangVienLopHocPhan().getGiangVien().getTenGiangVien(),
+//                        lichHocTH.getGiangVienLopHocPhan().getGiangVien().getChucVu(),
+//                        lichHocTH.getGiangVienLopHocPhan().getGiangVien().getSoDienThoai(),
+//                        lichHocTH.getGiangVienLopHocPhan().getGiangVien().getDiaChi(),
+//                        lichHocTH.getGiangVienLopHocPhan().getGiangVien().getGioiTinh(),
+//                        lichHocTH.getGiangVienLopHocPhan().getGiangVien().getNgaySinh()
+//                );
+//            }
 
-            GiangVienLopHocPhan_DTO giangVienLopHocPhan_dto = new GiangVienLopHocPhan_DTO(
-                    giangVien_dto,
-                    giangVienLopHocPhan.getLopHocPhan().getMaLopHocPhan(),
-                    loaiLichHoc,
-                    giangVienLopHocPhan.getViTri(),
-                    lichHocLT,
-                    lichHocTH_dto,
-                    giangVienLopHocPhan.getThoiGian()
-            );
+//        Optional<GiangVienLopHocPhan> optionalGiangVienLopHocPhan = giangVienLopHocPhanService.findGiangVienLopHocPhanByMaLopHP(maLopHocPhan);
+//        if (optionalGiangVienLopHocPhan.isPresent()) {
+//            GiangVienLopHocPhan giangVienLopHocPhan = optionalGiangVienLopHocPhan.get();
+//            GiangVien_DTO giangVien_dto = new GiangVien_DTO(giangVienLopHocPhan.getGiangVien().getMaGiangVien(),
+//                    giangVienLopHocPhan.getGiangVien().getTenGiangVien(),
+//                    giangVienLopHocPhan.getGiangVien().getChucVu(),
+//                    giangVienLopHocPhan.getGiangVien().getSoDienThoai(),
+//                    giangVienLopHocPhan.getGiangVien().getDiaChi(),
+//                    giangVienLopHocPhan.getGiangVien().getGioiTinh(),
+//                    giangVienLopHocPhan.getGiangVien().getNgaySinh()
+//            );
+//            String loaiLichHoc = "";
+//            switch (giangVienLopHocPhan.getLoaiLichHoc().getValue()) {
+//                case 0 -> loaiLichHoc += "LT";
+//                case 1 -> loaiLichHoc += "TH";
+//            }
+//            List<String> lichHocLT = new ArrayList<>();
+//            for (int i = 0; i < giangVienLopHocPhan.getLichHocLT().size(); i++) {
+//                lichHocLT.add(giangVienLopHocPhan.getLichHocLT().get(i));
+//            }
+//            List<LichHocTH_DTO> lichHocTH_dtos = new ArrayList<>();
+//            List<String> lichHocs = new ArrayList<>();
+//            for (int i = 0; i < giangVienLopHocPhan.getLichHocTH().getLichHoc().size(); i++) {
+//                lichHocs.add(giangVienLopHocPhan.getLichHocTH().getLichHoc().get(i));
+//            }
+//            LichHocTH_DTO lichHocTH_dto = new LichHocTH_DTO(
+//                    giangVienLopHocPhan.getLichHocTH().getMaLichHocTH(),
+//                    giangVienLopHocPhan.getLichHocTH().getTenNhomLichHocTH(),
+//                    giangVienLopHocPhan.getLichHocTH().getViTri(),
+//                    lichHocs
+//            );
+//
+//            GiangVienLopHocPhan_DTO giangVienLopHocPhan_dto = new GiangVienLopHocPhan_DTO(
+//                    giangVien_dto,
+//                    giangVienLopHocPhan.getLopHocPhan().getMaLopHocPhan(),
+//                    loaiLichHoc,
+//                    giangVienLopHocPhan.getViTri(),
+//                    lichHocLT,
+//                    lichHocTH_dto,
+//                    giangVienLopHocPhan.getThoiGian()
+//            );
             return ResponseEntity.ok(giangVienLopHocPhan_dto);
         }
         return ResponseEntity.notFound().build();

@@ -42,7 +42,7 @@ public class DataSampleConfig {
         };
     }
 
-//        @Bean
+//            @Bean
     CommandLineRunner initDatabase() {
         return args -> {
             // insert Khoa
@@ -327,56 +327,59 @@ public class DataSampleConfig {
             MonHocTienQuyet monHocTienQuyet2 = new MonHocTienQuyet(monHocLTHDT, monHocCTDLvaGT);
             monHocTienQuyetRepository.save(monHocTienQuyet1);
             monHocTienQuyetRepository.save(monHocTienQuyet2);
-            // insert Lich hoc thuc hanh
+            // Insert giang vien lop hoc phan và Lop hoc thuc hanh: insert Lich hoc thuc hanh sau do insert giang vien lop hoc phan
             List<String> lichHoc1 = new ArrayList<>();
             lichHoc1.add("Thứ 3 (T7 - T9)_05/18/2024");
             lichHoc1.add("Thứ 5 (T1 - T3)_05/18/2024");
             lichHoc1.add("Thứ 6 (T4 - T6)_05/18/2024");
-            List<String> lichHoc2 = new ArrayList<>();
-            lichHoc2.add("Thứ 3 (T7 - T9)_05/20/2024");
-            lichHoc2.add("Thứ 5 (T1 - T3)_05/20/2024");
-            lichHoc2.add("Thứ 6 (T4 - T6)_05/20/2024");
 
             LichHocTH lichHocTH1 = new LichHocTH(
                     "1",
                     "Tructiep_X_X8.01",
                     lichHoc1
             );
+            List<String> lichHocLTs = new ArrayList<>();
+            lichHocLTs.add("Thứ 2(T1-3)");
+            lichHocLTs.add("Thứ 3(T1-3)");
+            lichHocLTs.add("Thứ 4(T1-3)");
+            List<LichHocTH> lichHocTHList1 = new ArrayList<>();
+            lichHocTHList1.add(lichHocTH1);
+            GiangVienLopHocPhan giangVienLopHocPhan1 = new GiangVienLopHocPhan(
+                    LoaiLichHoc.TH,
+                    "Tructiep_X_X8.01",
+                    lichHocLTs,
+                    LocalDateTime.of(2024, 6, 13, 2, 1),
+                    gv1,
+                    lopHocPhan1,
+                    lichHocTHList1
+            );
+            lichHocTH1.setGiangVienLopHocPhan(giangVienLopHocPhan1);
+            giangVienLopHocPhanRepository.save(giangVienLopHocPhan1);
+//            ============================================================================
+            List<String> lichHoc2 = new ArrayList<>();
+            lichHoc2.add("Thứ 3 (T7 - T9)_05/20/2024");
+            lichHoc2.add("Thứ 5 (T1 - T3)_05/20/2024");
+            lichHoc2.add("Thứ 6 (T4 - T6)_05/20/2024");
             LichHocTH lichHocTH2 = new LichHocTH(
                     "2",
                     "Tructiep_X_V2.01",
                     lichHoc2
             );
-            lichHocTHRepository.save(lichHocTH1);
-            lichHocTHRepository.save(lichHocTH2);
-            // insert Giang Vien-Lop Hoc Phan
-            List<String> lichHocLTs = new ArrayList<>();
-            lichHocLTs.add("Thứ 2(T1-3)");
-            lichHocLTs.add("Thứ 3(T1-3)");
-            lichHocLTs.add("Thứ 4(T1-3)");
-            List<String> lichHocTHs = new ArrayList<>();
-            lichHocTHs.add("Thứ 3(T7-9)");
-            lichHocTHs.add("Thứ 4(T7-9)");
-            lichHocTHs.add("Thứ 5(T7-9)");
-            GiangVienLopHocPhan giangVienLopHocPhan1 = new GiangVienLopHocPhan(
-                    LoaiLichHoc.TH,
-                    "Tructiep_X_X8.01",
-                    lichHocLTs,
-                    lichHocTH1,
-                    LocalDateTime.of(2024, 6, 13, 2, 1),
-                    gv1,
-                    lopHocPhan1
-            );
+            List<LichHocTH> lichHocTHList2 = new ArrayList<>();
+            lichHocTHList2.add(lichHocTH2);
+//            lichHocTHRepository.save(lichHocTH1);
+//            lichHocTHRepository.save(lichHocTH2);
+
             GiangVienLopHocPhan giangVienLopHocPhan2 = new GiangVienLopHocPhan(
                     LoaiLichHoc.LT,
                     "Tructuyen_Zoom_2888888_8888",
                     lichHocLTs,
-                    lichHocTH2,
                     LocalDateTime.of(2024, 6, 14, 2, 1),
                     gv3,
-                    lopHocPhan2
+                    lopHocPhan2,
+                    lichHocTHList2
             );
-            giangVienLopHocPhanRepository.save(giangVienLopHocPhan1);
+            lichHocTH2.setGiangVienLopHocPhan(giangVienLopHocPhan2);
             giangVienLopHocPhanRepository.save(giangVienLopHocPhan2);
 //            "Tructuyen_Zoom_2888888_8888"
         };

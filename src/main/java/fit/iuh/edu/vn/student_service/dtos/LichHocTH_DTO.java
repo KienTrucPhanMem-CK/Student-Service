@@ -16,4 +16,5 @@ public class LichHocTH_DTO {
     private String tenNhomLichHocTH;
     private String viTri;
     private List<String> lichHoc;
+    private long maGiangVienLopHocPhan;
 }

@@ -16,16 +16,18 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
+
 public class GiangVienLopHocPhan {
     @Enumerated(EnumType.ORDINAL)
     private LoaiLichHoc loaiLichHoc;
     private String viTri;
     @ElementCollection
+    @CollectionTable(name = "lichHocLT", joinColumns = {
+            @JoinColumn(name = "maGiangVien", referencedColumnName = "maGiangVien"),
+            @JoinColumn(name = "maLopHocPhan", referencedColumnName = "maLopHocPhan")
+    })
+    @Column(name = "lichHocLT")
     private List<String> lichHocLT;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "maLichHocTH", referencedColumnName = "maLichHocTH")
-    private LichHocTH lichHocTH;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime thoiGian;
     @Id
@@ -36,4 +38,7 @@ public class GiangVienLopHocPhan {
     @ManyToOne
     @JoinColumn(name = "maLopHocPhan")
     private LopHocPhan lopHocPhan;
+    @OneToMany(mappedBy = "giangVienLopHocPhan", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LichHocTH> lichHocTHList;
+
 }

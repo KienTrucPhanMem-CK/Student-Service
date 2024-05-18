@@ -20,8 +20,14 @@ public class LichHocTH {
     private String tenNhomLichHocTH;
     private String viTri;
     @ElementCollection
+    @CollectionTable(name = "lichHoc", joinColumns = @JoinColumn(name = "maLichHocTH"))
+    @Column(name = "lichHoc")
     private List<String> lichHoc;
-    @OneToOne(mappedBy = "lichHocTH")
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name = "maGiangVien", referencedColumnName = "maGiangVien"),
+            @JoinColumn(name = "maLopHocPhan", referencedColumnName = "maLopHocPhan")
+    })
     private GiangVienLopHocPhan giangVienLopHocPhan;
 
     public LichHocTH(String tenNhomLichHocTH, String viTri, List<String> lichHoc) {
