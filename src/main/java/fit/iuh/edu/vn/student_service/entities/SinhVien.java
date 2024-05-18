@@ -42,6 +42,11 @@ public class SinhVien {
     private LopHocDanhNghia lopHocDanhNghia;
     @OneToMany(mappedBy = "sinhVien", fetch = FetchType.LAZY)
     private List<BangDiem> bangDiems = new ArrayList<>();
+
+    public SinhVien(long mssv) {
+        this.mssv = mssv;
+    }
+
     public SinhVien(long mssv, String matKhau, String hoTen, LocalDateTime ngaySinh, String diaChi, String queQuan, String soDienThoai, String gioiTinh, String anhDaiDien, String email, LoaiSinhVien loaiSinhVien, LopHocDanhNghia lopHocDanhNghia) {
         this.mssv = mssv;
         this.matKhau = matKhau;

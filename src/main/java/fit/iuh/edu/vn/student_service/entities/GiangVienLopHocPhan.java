@@ -23,11 +23,11 @@ public class GiangVienLopHocPhan {
     private String viTri;
     @ElementCollection
     private List<String> lichHocLT;
-    @ElementCollection
-    private List<String> lichHocTH;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "maLichHocTH", referencedColumnName = "maLichHocTH")
+    private LichHocTH lichHocTH;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime thoiGian;
-    private int nhomTH;
     @Id
     @ManyToOne
     @JoinColumn(name = "maGiangVien")

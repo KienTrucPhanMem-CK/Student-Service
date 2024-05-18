@@ -30,6 +30,7 @@ public class DataSampleConfig {
     private final MonHocTienQuyetRepository monHocTienQuyetRepository;
     private final NganhHocRepository nganhHocRepository;
     private final SinhVienRepository sinhVienRepository;
+    private final LichHocTHRepository lichHocTHRepository;
 
     //    @Bean
     CommandLineRunner test() {
@@ -41,7 +42,7 @@ public class DataSampleConfig {
         };
     }
 
-//    @Bean
+//        @Bean
     CommandLineRunner initDatabase() {
         return args -> {
             // insert Khoa
@@ -268,13 +269,15 @@ public class DataSampleConfig {
                     LocalDateTime.of(2023, 5, 14, 0, 0),
                     TrangThaiHocPhi.DA_DONG,
                     sv1,
-                    lopHocPhan1
+                    lopHocPhan1,
+                    "1"
             );
             BangDiem bangDiem2 = new BangDiem(10, 9, 9, 9, 9, TrangThai.DAT,
                     LocalDateTime.of(2022, 7, 14, 0, 0),
                     TrangThaiHocPhi.DA_DONG,
                     sv2,
-                    lopHocPhan1
+                    lopHocPhan1,
+                    "1"
             );
             bangDiemRepository.save(bangDiem1);
             bangDiemRepository.save(bangDiem2);
@@ -324,6 +327,28 @@ public class DataSampleConfig {
             MonHocTienQuyet monHocTienQuyet2 = new MonHocTienQuyet(monHocLTHDT, monHocCTDLvaGT);
             monHocTienQuyetRepository.save(monHocTienQuyet1);
             monHocTienQuyetRepository.save(monHocTienQuyet2);
+            // insert Lich hoc thuc hanh
+            List<String> lichHoc1 = new ArrayList<>();
+            lichHoc1.add("Thứ 3 (T7 - T9)_05/18/2024");
+            lichHoc1.add("Thứ 5 (T1 - T3)_05/18/2024");
+            lichHoc1.add("Thứ 6 (T4 - T6)_05/18/2024");
+            List<String> lichHoc2 = new ArrayList<>();
+            lichHoc2.add("Thứ 3 (T7 - T9)_05/20/2024");
+            lichHoc2.add("Thứ 5 (T1 - T3)_05/20/2024");
+            lichHoc2.add("Thứ 6 (T4 - T6)_05/20/2024");
+
+            LichHocTH lichHocTH1 = new LichHocTH(
+                    "1",
+                    "Tructiep_X_X8.01",
+                    lichHoc1
+            );
+            LichHocTH lichHocTH2 = new LichHocTH(
+                    "2",
+                    "Tructiep_X_V2.01",
+                    lichHoc2
+            );
+            lichHocTHRepository.save(lichHocTH1);
+            lichHocTHRepository.save(lichHocTH2);
             // insert Giang Vien-Lop Hoc Phan
             List<String> lichHocLTs = new ArrayList<>();
             lichHocLTs.add("Thứ 2(T1-3)");
@@ -337,9 +362,8 @@ public class DataSampleConfig {
                     LoaiLichHoc.TH,
                     "Tructiep_X_X8.01",
                     lichHocLTs,
-                    lichHocTHs,
+                    lichHocTH1,
                     LocalDateTime.of(2024, 6, 13, 2, 1),
-                    1,
                     gv1,
                     lopHocPhan1
             );
@@ -347,9 +371,8 @@ public class DataSampleConfig {
                     LoaiLichHoc.LT,
                     "Tructuyen_Zoom_2888888_8888",
                     lichHocLTs,
-                    lichHocTHs,
+                    lichHocTH2,
                     LocalDateTime.of(2024, 6, 14, 2, 1),
-                    2,
                     gv3,
                     lopHocPhan2
             );

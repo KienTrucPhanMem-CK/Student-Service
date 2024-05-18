@@ -2,12 +2,11 @@ package fit.iuh.edu.vn.student_service.controllers;
 
 import fit.iuh.edu.vn.student_service.dtos.*;
 import fit.iuh.edu.vn.student_service.entities.*;
-import fit.iuh.edu.vn.student_service.services.GiangVienLopHocPhanService;
-import fit.iuh.edu.vn.student_service.services.LopHocPhanService;
-import fit.iuh.edu.vn.student_service.services.MonHocCTKService;
-import fit.iuh.edu.vn.student_service.services.SinhVienService;
+import fit.iuh.edu.vn.student_service.repositories.BangDiemRepository;
+import fit.iuh.edu.vn.student_service.services.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +24,8 @@ public class SinhVienController {
     private final MonHocCTKService monHocCTKService;
     private final LopHocPhanService lopHocPhanService;
     private final GiangVienLopHocPhanService giangVienLopHocPhanService;
+    private final BangDiemService bangDiemService;
+    private final BangDiemRepository bangDiemRepository;
 
     @GetMapping("/getStudent")
     private ResponseEntity<SinhVien_DTO> getStudentById(@RequestParam Long mssv, @RequestParam String matKhau) {
@@ -164,7 +165,7 @@ public class SinhVienController {
     }
 
     @GetMapping("/getGiangVienLopHP")
-    private ResponseEntity<GiangVienLopHocPhan_DTO> getGiangVienLopHocPhan(long maLopHocPhan) {
+    private ResponseEntity<GiangVienLopHocPhan_DTO> getGiangVienLopHocPhan(@RequestParam long maLopHocPhan) {
         Optional<GiangVienLopHocPhan> optionalGiangVienLopHocPhan = giangVienLopHocPhanService.findGiangVienLopHocPhanByMaLopHP(maLopHocPhan);
         if (optionalGiangVienLopHocPhan.isPresent()) {
             GiangVienLopHocPhan giangVienLopHocPhan = optionalGiangVienLopHocPhan.get();
@@ -185,10 +186,16 @@ public class SinhVienController {
             for (int i = 0; i < giangVienLopHocPhan.getLichHocLT().size(); i++) {
                 lichHocLT.add(giangVienLopHocPhan.getLichHocLT().get(i));
             }
-            List<String> lichHocTH = new ArrayList<>();
-            for (int i = 0; i < giangVienLopHocPhan.getLichHocTH().size(); i++) {
-                lichHocTH.add(giangVienLopHocPhan.getLichHocTH().get(i));
+            List<String> lichHocs = new ArrayList<>();
+            for (int i = 0; i < giangVienLopHocPhan.getLichHocTH().getLichHoc().size(); i++) {
+                lichHocs.add(giangVienLopHocPhan.getLichHocTH().getLichHoc().get(i));
             }
+            LichHocTH_DTO lichHocTH_dto = new LichHocTH_DTO(
+                    giangVienLopHocPhan.getLichHocTH().getMaLichHocTH(),
+                    giangVienLopHocPhan.getLichHocTH().getTenNhomLichHocTH(),
+                    giangVienLopHocPhan.getLichHocTH().getViTri(),
+                    lichHocs
+            );
 
             GiangVienLopHocPhan_DTO giangVienLopHocPhan_dto = new GiangVienLopHocPhan_DTO(
                     giangVien_dto,
@@ -196,9 +203,8 @@ public class SinhVienController {
                     loaiLichHoc,
                     giangVienLopHocPhan.getViTri(),
                     lichHocLT,
-                    lichHocTH,
-                    giangVienLopHocPhan.getThoiGian(),
-                    giangVienLopHocPhan.getNhomTH()
+                    lichHocTH_dto,
+                    giangVienLopHocPhan.getThoiGian()
             );
             return ResponseEntity.ok(giangVienLopHocPhan_dto);
         }
@@ -242,5 +248,33 @@ public class SinhVienController {
             return ResponseEntity.ok(lopHocPhan_dto);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/addBangDiem")
+    private ResponseEntity<?> taoBangDiem(@RequestBody BangDiem bangDiem) {
+        try {
+            BangDiem bangDiemAddToDB = bangDiemService.taoBangDiem(bangDiem);
+            BangDiem_DTO bangDiem_dto = new BangDiem_DTO(
+                    bangDiemAddToDB.getDiemGK(),
+                    bangDiemAddToDB.getDiemChuyenCan(),
+                    bangDiemAddToDB.getDiemTK(),
+                    bangDiemAddToDB.getDiemTH(),
+                    bangDiemAddToDB.getDiemCK(),
+                    bangDiemAddToDB.getDiemTongKet(),
+                    bangDiemAddToDB.getDiemThang4(),
+                    bangDiemAddToDB.getDiemChu(),
+                    bangDiemAddToDB.getXepLoai(),
+                    bangDiemAddToDB.getGhiChu(),
+                    bangDiemAddToDB.getTrangThai(),
+                    bangDiemAddToDB.getNgayDangKy(),
+                    bangDiemAddToDB.getTrangThaiHocPhi(),
+                    bangDiemAddToDB.getNhomTH(),
+                    bangDiemAddToDB.getSinhVien().getMssv(),
+                    bangDiemAddToDB.getLopHocPhan().getMaLopHocPhan()
+            );
+            return ResponseEntity.ok(bangDiem_dto);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Lỗi khi tạo bảng điểm!");
+        }
     }
 }

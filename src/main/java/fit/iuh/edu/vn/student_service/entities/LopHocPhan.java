@@ -43,6 +43,10 @@ public class LopHocPhan {
     @OneToMany(mappedBy = "lopHocPhan")
     private List<BangDiem> bangDiems = new ArrayList<>();
 
+    public LopHocPhan(long maLopHocPhan) {
+        this.maLopHocPhan = maLopHocPhan;
+    }
+
     public LopHocPhan(String tenLopHocPhan, int soLuongToiDa, TrangThaiLop trangThaiLop, String kiHoc, double hocPhiTCTH, double hocPhiTCLT, int soTinChiTH, int soTinChiLT, int soLuongDaDangKy, MonHoc monHoc) {
         this.tenLopHocPhan = tenLopHocPhan;
         this.soLuongToiDa = soLuongToiDa;

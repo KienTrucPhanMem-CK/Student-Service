@@ -42,6 +42,7 @@ public class BangDiem {
     private LocalDateTime ngayDangKy;
     @Enumerated(EnumType.ORDINAL)
     private TrangThaiHocPhi trangThaiHocPhi;
+    private String nhomTH;
     @Id
     @ManyToOne
     @JoinColumn(name = "mssv")
@@ -52,7 +53,7 @@ public class BangDiem {
     @JoinColumn(name = "maLopHocPhan")
     private LopHocPhan lopHocPhan;
 
-    public BangDiem(double diemGK, double diemChuyenCan, double diemTK, double diemTH, double diemCK, TrangThai trangThai, LocalDateTime ngayDangKy, TrangThaiHocPhi trangThaiHocPhi, SinhVien sinhVien, LopHocPhan lopHocPhan) {
+    public BangDiem(double diemGK, double diemChuyenCan, double diemTK, double diemTH, double diemCK, TrangThai trangThai, LocalDateTime ngayDangKy, TrangThaiHocPhi trangThaiHocPhi, SinhVien sinhVien, LopHocPhan lopHocPhan, String nhomTH) {
         this.diemGK = diemGK;
         this.diemChuyenCan = diemChuyenCan;
         this.diemTK = diemTK;
@@ -63,5 +64,6 @@ public class BangDiem {
         this.trangThaiHocPhi = trangThaiHocPhi;
         this.sinhVien = sinhVien;
         this.lopHocPhan = lopHocPhan;
+        this.nhomTH = nhomTH;
     }
 }

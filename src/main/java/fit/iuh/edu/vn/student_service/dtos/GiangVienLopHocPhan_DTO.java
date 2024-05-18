@@ -16,7 +16,6 @@ public class GiangVienLopHocPhan_DTO {
     private String loaiLichHoc;
     private String viTri;
     private List<String> lichHocLT;
-    private List<String> lichHocTH;
+    private LichHocTH_DTO lichHocTH;
     private LocalDateTime thoiGian;
-    private int nhomTH;
 }
