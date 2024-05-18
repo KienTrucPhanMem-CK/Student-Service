@@ -20,14 +20,20 @@ public class LopHocPhan {
     @Column(name = "maLopHocPhan")
     private long maLopHocPhan;
     private String tenLopHocPhan;
+    @Column(name = "soLuongToiDa")
     private int soLuongToiDa;
     @Enumerated(EnumType.ORDINAL)
     private TrangThaiLop trangThaiLop;
     private String kiHoc;
+    @Column(name = "hocPhiTCTH")
     private double hocPhiTCTH;
+    @Column(name = "hocPhiTCLT")
     private double hocPhiTCLT;
+    @Column(name = "soTinChiTH")
     private int soTinChiTH;
+    @Column(name = "soTinChiLT")
     private int soTinChiLT;
+    @Column(name = "soLuongDaDangKy")
     private int soLuongDaDangKy;
     @ManyToOne
     @JoinColumn(name = "maMonHoc")

@@ -17,15 +17,25 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 public class BangDiem {
+    @Column(name = "diemGK")
     private double diemGK;
+    @Column(name = "diemChuyenCan")
     private double diemChuyenCan;
+    @Column(name = "diemTK")
     private double diemTK;
+    @Column(name = "diemTH")
     private double diemTH;
+    @Column(name = "diemCK")
     private double diemCK;
+    @Column(name = "diemTongKet")
     private double diemTongKet;
+    @Column(name = "diemThang4")
     private double diemThang4;
+    @Column(name = "diemChu")
     private String diemChu;
+    @Column(name = "xepLoai")
     private String xepLoai;
+    @Column(name = "ghiChu")
     private String ghiChu;
     @Enumerated(EnumType.ORDINAL)
     private TrangThai trangThai;

@@ -3,15 +3,18 @@ package fit.iuh.edu.vn.student_service.configs;
 import fit.iuh.edu.vn.student_service.entities.*;
 import fit.iuh.edu.vn.student_service.enums.*;
 import fit.iuh.edu.vn.student_service.repositories.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
+@RequiredArgsConstructor
 public class DataSampleConfig {
     private final BangDiemRepository bangDiemRepository;
     private final ChuongTrinhKhungRepository chuongTrinhKhungRepository;
@@ -28,37 +31,6 @@ public class DataSampleConfig {
     private final NganhHocRepository nganhHocRepository;
     private final SinhVienRepository sinhVienRepository;
 
-    @Autowired
-    public DataSampleConfig(BangDiemRepository bangDiemRepository,
-                            ChuongTrinhKhungRepository chuongTrinhKhungRepository,
-                            GiangVienLopHocPhanRepository giangVienLopHocPhanRepository,
-                            GiangVienRepository giangVienRepository,
-                            KhoaHocRepository khoaHocRepository,
-                            KhoaRepository khoaRepository,
-                            LoaiSinhVienRepository loaiSinhVienRepository,
-                            LopHocDanhNghiaRepository lopHocDanhNghiaRepository,
-                            LopHocPhanRepository lopHocPhanRepository,
-                            MonHocChuongTrinhKhungRepository monHocChuongTrinhKhungRepository,
-                            MonHocRepository monHocRepository,
-                            MonHocTienQuyetRepository monHocTienQuyetRepository,
-                            NganhHocRepository nganhHocRepository,
-                            SinhVienRepository sinhVienRepository) {
-        this.bangDiemRepository = bangDiemRepository;
-        this.chuongTrinhKhungRepository = chuongTrinhKhungRepository;
-        this.giangVienLopHocPhanRepository = giangVienLopHocPhanRepository;
-        this.giangVienRepository = giangVienRepository;
-        this.khoaHocRepository = khoaHocRepository;
-        this.khoaRepository = khoaRepository;
-        this.loaiSinhVienRepository = loaiSinhVienRepository;
-        this.lopHocDanhNghiaRepository = lopHocDanhNghiaRepository;
-        this.lopHocPhanRepository = lopHocPhanRepository;
-        this.monHocChuongTrinhKhungRepository = monHocChuongTrinhKhungRepository;
-        this.monHocRepository = monHocRepository;
-        this.monHocTienQuyetRepository = monHocTienQuyetRepository;
-        this.nganhHocRepository = nganhHocRepository;
-        this.sinhVienRepository = sinhVienRepository;
-    }
-
     //    @Bean
     CommandLineRunner test() {
         return args -> {
@@ -69,7 +41,7 @@ public class DataSampleConfig {
         };
     }
 
-//        @Bean
+//    @Bean
     CommandLineRunner initDatabase() {
         return args -> {
             // insert Khoa
@@ -353,10 +325,19 @@ public class DataSampleConfig {
             monHocTienQuyetRepository.save(monHocTienQuyet1);
             monHocTienQuyetRepository.save(monHocTienQuyet2);
             // insert Giang Vien-Lop Hoc Phan
+            List<String> lichHocLTs = new ArrayList<>();
+            lichHocLTs.add("Thứ 2(T1-3)");
+            lichHocLTs.add("Thứ 3(T1-3)");
+            lichHocLTs.add("Thứ 4(T1-3)");
+            List<String> lichHocTHs = new ArrayList<>();
+            lichHocTHs.add("Thứ 3(T7-9)");
+            lichHocTHs.add("Thứ 4(T7-9)");
+            lichHocTHs.add("Thứ 5(T7-9)");
             GiangVienLopHocPhan giangVienLopHocPhan1 = new GiangVienLopHocPhan(
                     LoaiLichHoc.TH,
-                    "Tructiep_X_2.02",
-                    "Thứ 3(T7-9)",
+                    "Tructiep_X_X8.01",
+                    lichHocLTs,
+                    lichHocTHs,
                     LocalDateTime.of(2024, 6, 13, 2, 1),
                     1,
                     gv1,
@@ -365,7 +346,8 @@ public class DataSampleConfig {
             GiangVienLopHocPhan giangVienLopHocPhan2 = new GiangVienLopHocPhan(
                     LoaiLichHoc.LT,
                     "Tructuyen_Zoom_2888888_8888",
-                    "Thứ 2(T1-3)",
+                    lichHocLTs,
+                    lichHocTHs,
                     LocalDateTime.of(2024, 6, 14, 2, 1),
                     2,
                     gv3,

@@ -6,30 +6,25 @@ import fit.iuh.edu.vn.student_service.services.GiangVienLopHocPhanService;
 import fit.iuh.edu.vn.student_service.services.LopHocPhanService;
 import fit.iuh.edu.vn.student_service.services.MonHocCTKService;
 import fit.iuh.edu.vn.student_service.services.SinhVienService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/Student")
+@RequiredArgsConstructor
 public class SinhVienController {
 
     private final SinhVienService sinhVienService;
     private final MonHocCTKService monHocCTKService;
     private final LopHocPhanService lopHocPhanService;
     private final GiangVienLopHocPhanService giangVienLopHocPhanService;
-
-    @Autowired
-    public SinhVienController(SinhVienService sinhVienService, MonHocCTKService monHocCTKService, LopHocPhanService lopHocPhanService, GiangVienLopHocPhanService giangVienLopHocPhanService) {
-        this.sinhVienService = sinhVienService;
-        this.monHocCTKService = monHocCTKService;
-        this.lopHocPhanService = lopHocPhanService;
-        this.giangVienLopHocPhanService = giangVienLopHocPhanService;
-    }
 
     @GetMapping("/getStudent")
     private ResponseEntity<SinhVien_DTO> getStudentById(@RequestParam Long mssv, @RequestParam String matKhau) {
@@ -133,33 +128,37 @@ public class SinhVienController {
     }
 
     @GetMapping("/getLopHocPhan")
-    private ResponseEntity<LopHocPhan_DTO> getLopHocPhan(@RequestParam long maMonHoc, @RequestParam String kiHoc) {
-        Optional<LopHocPhan> optionalLopHocPhan = lopHocPhanService.findLopHocPhanByMaMHAndKiHoc(maMonHoc, kiHoc);
-        if (optionalLopHocPhan.isPresent()) {
-            LopHocPhan lopHocPhan = optionalLopHocPhan.get();
-            String trangThaiLop = "";
-            switch (lopHocPhan.getTrangThaiLop().getValue()) {
-                case 0 -> trangThaiLop += "Đã khóa";
-                case 1 -> trangThaiLop += "Chờ sinh viên đăng ký";
+    private ResponseEntity<List<LopHocPhan_DTO>> getLopHocPhan(@RequestParam long maMonHoc, @RequestParam String kiHoc) {
+        List<LopHocPhan> lopHocPhans = lopHocPhanService.findLopHocPhanByMaMHAndKiHoc(maMonHoc, kiHoc);
+        if (lopHocPhans != null) {
+            List<LopHocPhan_DTO> lopHocPhan_dtos = new ArrayList<>();
+            for (LopHocPhan lopHocPhan : lopHocPhans) {
+                String trangThaiLop = "";
+                switch (lopHocPhan.getTrangThaiLop().getValue()) {
+                    case 0 -> trangThaiLop += "Đã khóa";
+                    case 1 -> trangThaiLop += "Chờ sinh viên đăng ký";
+                }
+                MonHoc_DTO monHoc_dto = new MonHoc_DTO(lopHocPhan.getMonHoc().getMaMonHoc(),
+                        lopHocPhan.getMonHoc().getTenMonHoc(),
+                        lopHocPhan.getMonHoc().getKhoa().getMaKhoa()
+                );
+                LopHocPhan_DTO lopHocPhan_dto = new LopHocPhan_DTO(
+                        lopHocPhan.getMaLopHocPhan(),
+                        lopHocPhan.getTenLopHocPhan(),
+                        lopHocPhan.getSoLuongToiDa(),
+                        trangThaiLop,
+                        lopHocPhan.getKiHoc(),
+                        monHoc_dto,
+                        lopHocPhan.getHocPhiTCTH(),
+                        lopHocPhan.getHocPhiTCLT(),
+                        lopHocPhan.getSoTinChiTH(),
+                        lopHocPhan.getSoTinChiLT(),
+                        lopHocPhan.getSoLuongDaDangKy()
+                );
+                lopHocPhan_dtos.add(lopHocPhan_dto);
             }
-            MonHoc_DTO monHoc_dto = new MonHoc_DTO(lopHocPhan.getMonHoc().getMaMonHoc(),
-                    lopHocPhan.getMonHoc().getTenMonHoc(),
-                    lopHocPhan.getMonHoc().getKhoa().getMaKhoa()
-            );
-            LopHocPhan_DTO lopHocPhan_dto = new LopHocPhan_DTO(
-                    lopHocPhan.getMaLopHocPhan(),
-                    lopHocPhan.getTenLopHocPhan(),
-                    lopHocPhan.getSoLuongToiDa(),
-                    trangThaiLop,
-                    lopHocPhan.getKiHoc(),
-                    monHoc_dto,
-                    lopHocPhan.getHocPhiTCTH(),
-                    lopHocPhan.getHocPhiTCLT(),
-                    lopHocPhan.getSoTinChiTH(),
-                    lopHocPhan.getSoTinChiLT(),
-                    lopHocPhan.getSoLuongDaDangKy()
-            );
-            return ResponseEntity.ok(lopHocPhan_dto);
+
+            return ResponseEntity.ok(lopHocPhan_dtos);
         }
         return ResponseEntity.notFound().build();
     }
@@ -182,17 +181,65 @@ public class SinhVienController {
                 case 0 -> loaiLichHoc += "LT";
                 case 1 -> loaiLichHoc += "TH";
             }
+            List<String> lichHocLT = new ArrayList<>();
+            for (int i = 0; i < giangVienLopHocPhan.getLichHocLT().size(); i++) {
+                lichHocLT.add(giangVienLopHocPhan.getLichHocLT().get(i));
+            }
+            List<String> lichHocTH = new ArrayList<>();
+            for (int i = 0; i < giangVienLopHocPhan.getLichHocTH().size(); i++) {
+                lichHocTH.add(giangVienLopHocPhan.getLichHocTH().get(i));
+            }
 
             GiangVienLopHocPhan_DTO giangVienLopHocPhan_dto = new GiangVienLopHocPhan_DTO(
                     giangVien_dto,
                     giangVienLopHocPhan.getLopHocPhan().getMaLopHocPhan(),
                     loaiLichHoc,
                     giangVienLopHocPhan.getViTri(),
-                    giangVienLopHocPhan.getLichHoc(),
+                    lichHocLT,
+                    lichHocTH,
                     giangVienLopHocPhan.getThoiGian(),
                     giangVienLopHocPhan.getNhomTH()
             );
             return ResponseEntity.ok(giangVienLopHocPhan_dto);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/getLopHocPhanByMssvAndKihoc")
+    private ResponseEntity<LopHocPhan_DTO> getLopHocPhanByMssvAndKihoc(@RequestParam long mssv, @RequestParam String kiHoc) {
+        if (lopHocPhanService.findLopHocPhanByMsssAndKihoc(mssv, kiHoc).isPresent()) {
+            LopHocPhan lopHocPhan = lopHocPhanService.findLopHocPhanByMsssAndKihoc(mssv, kiHoc).get();
+            String trangThaiLop = "";
+            switch (lopHocPhan.getTrangThaiLop().getValue()) {
+                case 0 -> trangThaiLop += "Đã khóa";
+                case 1 -> trangThaiLop += "Chờ sinh viên đăng ký";
+            }
+            MonHoc_DTO monHoc_dto = new MonHoc_DTO(
+                    lopHocPhan.getMonHoc().getMaMonHoc(),
+                    lopHocPhan.getMonHoc().getTenMonHoc(),
+                    lopHocPhan.getMonHoc().getKhoa().getMaKhoa()
+            );
+            LocalDateTime ngayDangKy = null;
+            for (int i = 0; i < lopHocPhan.getBangDiems().size(); i++) {
+                if (lopHocPhan.getBangDiems().get(i).getSinhVien().getMssv() == mssv) {
+                    ngayDangKy = lopHocPhan.getBangDiems().get(i).getNgayDangKy();
+                }
+            }
+            LopHocPhan_DTO lopHocPhan_dto = new LopHocPhan_DTO(
+                    lopHocPhan.getMaLopHocPhan(),
+                    lopHocPhan.getTenLopHocPhan(),
+                    lopHocPhan.getSoLuongToiDa(),
+                    trangThaiLop,
+                    lopHocPhan.getKiHoc(),
+                    monHoc_dto,
+                    lopHocPhan.getHocPhiTCTH(),
+                    lopHocPhan.getHocPhiTCLT(),
+                    lopHocPhan.getSoTinChiTH(),
+                    lopHocPhan.getSoTinChiLT(),
+                    lopHocPhan.getSoLuongDaDangKy(),
+                    ngayDangKy
+            );
+            return ResponseEntity.ok(lopHocPhan_dto);
         }
         return ResponseEntity.notFound().build();
     }

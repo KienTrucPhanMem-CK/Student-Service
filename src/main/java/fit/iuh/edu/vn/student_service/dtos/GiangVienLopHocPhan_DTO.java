@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,7 +15,8 @@ public class GiangVienLopHocPhan_DTO {
     private long maLopHocPhan;
     private String loaiLichHoc;
     private String viTri;
-    private String lichHoc;
+    private List<String> lichHocLT;
+    private List<String> lichHocTH;
     private LocalDateTime thoiGian;
     private int nhomTH;
 }

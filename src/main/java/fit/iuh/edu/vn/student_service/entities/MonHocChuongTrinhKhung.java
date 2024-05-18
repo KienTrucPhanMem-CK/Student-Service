@@ -17,7 +17,9 @@ public class MonHocChuongTrinhKhung {
     private int hocKy;
     @Enumerated(EnumType.ORDINAL)
     private LoaiMonHoc loaiMonHoc;
+    @Column(name = "soTinChiThucHanh")
     private int soTinChiThucHanh;
+    @Column(name = "SoTinChiLyThuyet")
     private int SoTinChiLyThuyet;
     @Id
     @ManyToOne

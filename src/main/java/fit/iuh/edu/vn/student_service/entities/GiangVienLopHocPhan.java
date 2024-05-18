@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "GiangVienLopHocPhan")
@@ -20,7 +21,10 @@ public class GiangVienLopHocPhan {
     @Enumerated(EnumType.ORDINAL)
     private LoaiLichHoc loaiLichHoc;
     private String viTri;
-    private String lichHoc;
+    @ElementCollection
+    private List<String> lichHocLT;
+    @ElementCollection
+    private List<String> lichHocTH;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime thoiGian;
     private int nhomTH;
